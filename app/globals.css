@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/* Terminal-native. One typeface (mono), a hairline grid, and colour reserved
+   entirely for status — the same seven tier colours the app itself uses.
+   Nothing else on this page is allowed to be coloured. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ground: #08090C;
+  --panel:  #0D0F13;
+  --raised: #14171C;
+  --line:   #1B1F26;
+  --line-2: #2A303A;
+
+  --ink:    #E8ECF2;
+  --ink-2:  #8B939F;
+  --ink-3:  #575E68;
+
+  /* the tier ladder, straight from vigil_widget.py */
+  --idle:   #6E7887;
+  --work:   #4C8DFF;
+  --done:   #3DD68C;
+  --ask:    #FFB020;
+  --block:  #FF8C42;
+  --fail:   #FF5C5C;
+  --destr:  #FF3B3B;
+
+  --accent: #FF8C42;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ground: var(--ground);
+  --color-panel:  var(--panel);
+  --color-raised: var(--raised);
+  --color-line:   var(--line);
+  --color-line2:  var(--line-2);
+  --color-ink:    var(--ink);
+  --color-ink2:   var(--ink-2);
+  --color-ink3:   var(--ink-3);
+  --color-accent: var(--accent);
+  --color-work:   var(--work);
+  --color-done:   var(--done);
+  --color-block:  var(--block);
+  --color-destr:  var(--destr);
+
+  --font-mono: var(--font-plex-mono);
+  --font-sans: var(--font-plex);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Section index: `01 / SEE IT` */
+.idx {
+  display: flex; align-items: baseline; gap: .85rem;
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.idx b { color: var(--accent); font-weight: 500; }
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+::selection { background: rgba(255,140,66,.3); }
+
+*:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
 }

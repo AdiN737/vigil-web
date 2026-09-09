@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# vigil-web
 
-## Getting Started
+Landing page for [Vigil](https://github.com/AdiN737/vigil) — a dot in the corner
+of your screen that tells you the moment Claude Code needs you.
 
-First, run the development server:
+## Stack
+
+Next.js 16 (App Router, Turbopack) · React 19 · Tailwind 4 · Motion 13 ·
+IBM Plex Mono.
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For the production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build && npm start
+```
 
-## Learn More
+## Where things are
 
-To learn more about Next.js, take a look at the following resources:
+| Path | What |
+|---|---|
+| `app/page.tsx` | The whole page — six sections, in order |
+| `app/components/Frame.tsx` | The section shell every block uses: rule, index, content |
+| `app/lib/site.ts` | Download URL, version, size. **Change these on a new release.** |
+| `app/globals.css` | The palette. The seven status colours are copied from `vigil_widget.py` |
+| `public/shots/` | The two desk renders |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Two rules worth keeping
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Colour means status.** The page is monochrome except for the seven tier
+colours the app itself uses. If something new needs colour, it probably needs a
+rule instead — the constraint is what stops this looking like every other
+landing page.
 
-## Deploy on Vercel
+**Every number is measured.** `500 events → 0 pop-ups`, `0.33 s per turn`,
+`171 ms` and the pixel sizes in the renders all come from real measurements of
+the shipped app. Don't add a number that hasn't been measured, and re-check the
+existing ones against the source before changing them.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploying
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Connected to Vercel from the `main` branch — pushing deploys.
+
+The download button points at the GitHub **release**, not a file in `public/`.
+A new release only needs `VERSION` and `SIZE` updated in `app/lib/site.ts`;
+`DOWNLOAD_URL` uses the `/releases/latest/download/` form and keeps working.
