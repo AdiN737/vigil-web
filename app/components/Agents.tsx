@@ -29,7 +29,7 @@ export default function Agents() {
     : Q.length + 1;
 
   return (
-    <Frame n="05" label="Every session">
+    <Frame n="06" label="Every session">
       <div ref={ref} className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
         <p className="max-w-[34ch] text-[14px] leading-relaxed text-ink2">
           Run five at once. Ranked by urgency, not by which shouted last.

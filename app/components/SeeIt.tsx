@@ -19,7 +19,7 @@ export default function SeeIt() {
   const [i, setI] = useState(0);
 
   return (
-    <Frame n="02" label="On a real screen">
+    <Frame n="03" label="On a real screen">
       <div className="flex items-center justify-between gap-6 border-b border-line pb-4">
         <p className="max-w-[42ch] text-[14px] leading-relaxed text-ink2">
           Same desk, minutes apart. The only thing that changes is one corner.
