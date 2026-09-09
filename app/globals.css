@@ -23,7 +23,12 @@
   --fail:   #FF5C5C;
   --destr:  #FF3B3B;
 
-  --accent: #FF8C42;
+  /* The action colour must NOT be --block (#FF8C42). Painting the download
+     button in the hue that means "blocked" breaks the page's own rule that
+     colour means status. Green is the resolution colour: pressing this button
+     is the thing that unblocks you. */
+  --accent: #3DD68C;
+  --accent-ink: #06251A;
 }
 
 @theme inline {
@@ -36,6 +41,7 @@
   --color-ink2:   var(--ink-2);
   --color-ink3:   var(--ink-3);
   --color-accent: var(--accent);
+  --color-accentink: var(--accent-ink);
   --color-work:   var(--work);
   --color-done:   var(--done);
   --color-block:  var(--block);
@@ -60,11 +66,27 @@ body {
   font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
   color: var(--ink-3);
 }
-.idx b { color: var(--accent); font-weight: 500; }
+.idx b { color: var(--ink-2); font-weight: 500; }
 
 .tnum { font-variant-numeric: tabular-nums; }
 
-::selection { background: rgba(255,140,66,.3); }
+/* A faint field of technical marks. Adds instrument-panel texture to the
+   near-black without introducing colour, which is reserved for status. */
+.marks::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: .5;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 5%, transparent 70%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 5%, transparent 70%);
+}
+
+::selection { background: rgba(61,214,140,.25); }
 
 *:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 

@@ -13,7 +13,7 @@ const ROWS: [string, string, string, string][] = [
 
 export default function States() {
   return (
-    <Frame n="05" label="Seven states">
+    <Frame n="04" label="Seven states">
       <p className="max-w-[52ch] text-[14px] leading-relaxed text-ink2">
         Three never interrupt you — and those three are most of the day.
       </p>

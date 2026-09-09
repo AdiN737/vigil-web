@@ -31,7 +31,7 @@ export default function Quiet() {
   const done = count === 0;
 
   return (
-    <Frame n="04" label="Why it stays quiet">
+    <Frame n="03" label="Why it stays quiet">
       <div ref={ref} className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-start">
         <div>
           <p className="max-w-[46ch] text-[14px] leading-relaxed text-ink2">

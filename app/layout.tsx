@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import Nav from "./components/Nav";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -20,9 +21,9 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const title = "Vigil — stop babysitting your agent";
+const title = "Vigil — answer Claude Code from the corner of your screen";
 const description =
-  "A dot in the corner of your screen. Silent while Claude Code works — and when it is genuinely stuck, you approve from the dot without leaving what you are doing. Free, Windows, no account.";
+  "A Windows widget for Claude Code. A dot in the corner that stays silent while the agent works, and opens the moment it needs an answer — which you give from there, without leaving what you are doing. Free, no account.";
 
 export const metadata: Metadata = {
   title,
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body
         className={`${archivo.variable} ${plex.variable} ${plexMono.variable} antialiased`}
       >
+        <Nav />
         {children}
       </body>
     </html>

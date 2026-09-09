@@ -1,6 +1,5 @@
 import Hero from "./components/Hero";
 import Stage from "./components/Stage";
-import Try from "./components/Try";
 import SeeIt from "./components/SeeIt";
 import Quiet from "./components/Quiet";
 import States from "./components/States";
@@ -14,7 +13,6 @@ export default function Home() {
       <main>
         <Hero />
         <Stage />
-        <Try />
         <SeeIt />
         <Quiet />
         <States />

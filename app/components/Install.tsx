@@ -9,7 +9,7 @@ const STEPS: [string, string][] = [
 
 export default function Install() {
   return (
-    <Frame n="07" label="Install" id="install">
+    <Frame n="06" label="Install" id="install">
       <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-start">
         <div>
           <p className="text-[14px] text-ink2">
