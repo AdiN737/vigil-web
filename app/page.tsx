@@ -1,4 +1,5 @@
 import Hero from "./components/Hero";
+import Stage from "./components/Stage";
 import SeeIt from "./components/SeeIt";
 import Quiet from "./components/Quiet";
 import States from "./components/States";
@@ -11,6 +12,7 @@ export default function Home() {
     <>
       <main>
         <Hero />
+        <Stage />
         <SeeIt />
         <Quiet />
         <States />
