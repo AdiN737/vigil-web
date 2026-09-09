@@ -1,31 +1,41 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useCanAnimate } from "../lib/useCanAnimate";
 import { DOWNLOAD_URL, SIZE, VERSION } from "../lib/site";
 
-/* Six steps of the real state machine, on a loop. This is the only moving
-   thing above the fold; everything else holds still so it reads as a document
-   rather than a slideshow. */
-const LOOP = [
-  { c: "var(--work)",  t: "working",     ms: 2600, say: "agent working" },
-  { c: "var(--work)",  t: "working",     ms: 2000, say: "still working" },
-  { c: "var(--block)", t: "blocked",     ms: 3000, say: "needs you" },
-  { c: "var(--destr)", t: "destructive", ms: 3000, say: "force-push" },
-  { c: "var(--done)",  t: "done",        ms: 2200, say: "finished" },
-  { c: "var(--idle)",  t: "idle",        ms: 1800, say: "idle" },
+/* The real state machine, on a loop, above the fold. It spends most of the
+   cycle silent — which is the argument — and pops the pill exactly once, on
+   the one event that earns it. */
+type Step = {
+  colour: string;
+  say: string;
+  ms: number;
+  pill?: { project: string; detail: string; danger?: boolean };
+};
+
+const LOOP: Step[] = [
+  { colour: "var(--idle)",  say: "idle",        ms: 1600 },
+  { colour: "var(--work)",  say: "working",     ms: 2600 },
+  { colour: "var(--work)",  say: "working",     ms: 2200 },
+  { colour: "var(--block)", say: "blocked",     ms: 3400,
+    pill: { project: "web-client", detail: "npm run build" } },
+  { colour: "var(--destr)", say: "destructive", ms: 4200,
+    pill: { project: "api-server", detail: "git push --force origin main", danger: true } },
+  { colour: "var(--done)",  say: "done",        ms: 2200 },
 ];
 
 export default function Hero() {
-  const still = useReducedMotion();
+  const canAnimate = useCanAnimate();
   const [i, setI] = useState(0);
   const s = LOOP[i];
 
   useEffect(() => {
-    if (still) return;
+    if (!canAnimate) return; // a frozen loop in a hidden tab helps nobody
     const t = setTimeout(() => setI((n) => (n + 1) % LOOP.length), s.ms);
     return () => clearTimeout(t);
-  }, [i, still, s.ms]);
+  }, [i, canAnimate, s.ms]);
 
   return (
     <header className="border-t border-line">
@@ -64,29 +74,62 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* the state machine, ticking */}
-        <div className="mt-16 flex items-center gap-4 border-t border-line pt-8">
-          <span className="relative flex size-3 items-center justify-center">
-            <motion.span
-              key={s.t}
-              className="absolute inset-0 rounded-full"
-              style={{ background: s.c }}
-              initial={still ? false : { scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.28 }}
+        {/* the loop: a status line on the left, and the pill it pops on the
+            right — the whole product in one row */}
+        <div className="mt-16 grid items-center gap-6 border-t border-line pt-8 md:grid-cols-[auto_1fr_auto]">
+          <div className="flex items-center gap-3.5">
+            {/* colour is state, so CSS transition, never a Motion animation */}
+            <span
+              className="size-3 rounded-full transition-colors duration-300"
+              style={{ background: s.colour }}
             />
-          </span>
-          <motion.span
-            key={s.say}
-            initial={still ? false : { opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28 }}
-            className="text-[12px] uppercase tracking-[0.2em]"
-            style={{ color: s.c }}
-          >
-            {s.say}
-          </motion.span>
-          <span className="ml-auto text-[11px] tracking-wider text-ink3">
+            <span
+              className="text-[12px] uppercase tracking-[0.2em] transition-colors duration-300"
+              style={{ color: s.colour }}
+            >
+              {s.say}
+            </span>
+          </div>
+
+          <div className="hidden min-h-[104px] justify-end md:flex">
+            <AnimatePresence mode="wait">
+              {s.pill && (
+                <motion.div
+                  key={s.pill.project}
+                  initial={canAnimate ? { opacity: 0, scale: 0.86, y: 12 } : false}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={canAnimate ? { opacity: 0, scale: 0.92, y: -6 } : undefined}
+                  transition={{ type: "spring", stiffness: 520, damping: 34 }}
+                  className="w-[292px] border-2 px-4 py-3"
+                  style={{ borderColor: s.colour, background: "var(--panel)" }}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="tnum text-[11px]" style={{ color: s.colour }}>14m</span>
+                    <span className="text-[13px] font-medium text-ink">{s.pill.project}</span>
+                    <span className="size-2 rounded-full" style={{ background: s.colour }} />
+                  </div>
+                  <p className="mt-1 truncate text-right text-[11.5px] text-ink2">
+                    {s.pill.detail}
+                  </p>
+                  <div className="mt-3 flex justify-end gap-2">
+                    <span
+                      className="px-3 py-1 text-[11px] font-medium"
+                      style={
+                        s.pill.danger
+                          ? { background: "var(--accent)", color: "var(--ground)" }
+                          : { border: "1px solid var(--done)", color: "var(--done)" }
+                      }
+                    >
+                      {s.pill.danger ? "Approve anyway" : "Approve"}
+                    </span>
+                    <span className="border border-ink3 px-3 py-1 text-[11px] text-ink3">Deny</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <span className="text-[11px] tracking-wider text-ink3">
             500 events → 0 pop-ups
           </span>
         </div>

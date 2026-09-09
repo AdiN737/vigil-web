@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useReducedMotion } from "motion/react";
 import Frame from "./Frame";
 import { useThrough } from "../lib/useTrack";
+import { useCanAnimate } from "../lib/useCanAnimate";
 
 const GATES: [string, string][] = [
   ["actionable?",    "working, done and idle never open the pill"],
@@ -18,15 +18,16 @@ const GATES: [string, string][] = [
    per-gate survivor counts were never measured, and inventing five
    plausible-looking ones would be the only dishonest thing on this page. */
 export default function Quiet() {
-  const still = useReducedMotion();
+  const canAnimate = useCanAnimate();
   const ref = useRef<HTMLDivElement>(null);
   const p = useThrough(ref);
 
   // Hold at 500 briefly, fall through the gates, land on 0 and stay there.
-  const fall = Math.min(1, Math.max(0, (p - 0.12) / 0.68));
+  // When we cannot animate, skip straight to the resting state: 0 and all lit.
+  const fall = canAnimate ? Math.min(1, Math.max(0, (p - 0.12) / 0.68)) : 1;
   const eased = 1 - Math.pow(1 - fall, 3);
-  const count = still ? 0 : Math.round(500 * (1 - eased));
-  const lit = still ? GATES.length : Math.min(GATES.length, Math.floor(fall * GATES.length * 1.15));
+  const count = Math.round(500 * (1 - eased));
+  const lit = Math.min(GATES.length, Math.floor(fall * GATES.length * 1.15));
   const done = count === 0;
 
   return (
