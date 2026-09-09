@@ -27,7 +27,10 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  metadataBase: new URL("https://vigil.dev"),
+  // Absolute base for og:image and friends. This was vigil.dev — a domain we
+  // do not own, which was answering with a 114-byte parking page, so every
+  // shared link resolved its preview image to a stranger's server.
+  metadataBase: new URL("https://vigilit.app"),
   openGraph: {
     title,
     description,
