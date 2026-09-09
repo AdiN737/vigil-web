@@ -67,3 +67,53 @@ export function useTrack(
 
   return { phase, progress };
 }
+
+/* Progress of an element travelling THROUGH the viewport, 0 → 1.
+
+   Unlike useTrack this needs no sticky container and no tall spacer, so a
+   normal-height section can be scroll-linked without hijacking the scroll.
+   The window is deliberately short of the full travel: the sequence should
+   finish while the section is comfortably on screen, not as it leaves.
+
+   Same fail-open rule as useSeen: a hidden document suspends rAF, so nothing
+   would ever update. Callers get 1 (the resting, finished state) in that case
+   rather than being stranded at 0. */
+export function useThrough(ref: RefObject<HTMLElement | null>) {
+  const [p, setP] = useState(0);
+
+  useEffect(() => {
+    if (typeof document !== "undefined" && document.hidden) {
+      setP(1);
+      return;
+    }
+
+    let raf = 0;
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const start = window.innerHeight * 0.88;   // begins as it comes up
+      const span = Math.max(1, r.height * 0.55); // and finishes mid-section
+      setP(Math.min(1, Math.max(0, (start - r.top) / span)));
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    const onHide = () => document.hidden && setP(1);
+
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      document.removeEventListener("visibilitychange", onHide);
+    };
+  }, [ref]);
+
+  return p;
+}
