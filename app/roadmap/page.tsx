@@ -33,6 +33,8 @@ const SHIPPED: Item[] = [
 ];
 
 const BUILDING: Item[] = [
+  { title: "Codex / ChatGPT coding-agent adapter",
+    note: "The provider-neutral adapter is implemented in source. A real Codex permission flow, packaging, and Windows release validation are the remaining steps." },
   { title: "macOS build",
     note: "Every OS-specific call is ported and the source is cross-platform. PyInstaller cannot cross-compile, so it needs building and testing on a Mac — that is the whole remaining gap." },
   { title: "Code signing",
@@ -40,8 +42,8 @@ const BUILDING: Item[] = [
 ];
 
 const PLANNED: Item[] = [
-  { title: "Every agent, not just Claude Code",
-    note: "ChatGPT, Gemini, Cursor. A browser extension for the web-based ones, bridged to the desktop widget so the tab and the desktop share one queue." },
+  { title: "Browser agents",
+    note: "Ordinary ChatGPT web chats, Gemini, and Cursor need a browser extension plus a native bridge. That is separate from the Codex lifecycle adapter already in source." },
   { title: "Answer from your phone",
     note: "The decision file the widget writes today is the same file a phone would write. The hard part — knowing when a human is genuinely needed — is already solved." },
   { title: "The desk device",
@@ -111,7 +113,7 @@ export default function RoadmapPage() {
               whether it exists yet.
             </p>
             <p className="mt-4 max-w-[58ch] text-[13px] leading-relaxed text-ink3">
-              Vigil is three days old and free. If something here matters to
+              Vigil is early and free. If something here matters to
               you,{" "}
               <a href={`${REPO_URL}/issues`} className="text-ink2 underline underline-offset-4 hover:text-accent">
                 open an issue

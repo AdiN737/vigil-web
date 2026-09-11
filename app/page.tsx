@@ -1,8 +1,6 @@
 import Hero from "./components/Hero";
 import Stage from "./components/Stage";
-import SeeIt from "./components/SeeIt";
 import Quiet from "./components/Quiet";
-import States from "./components/States";
 import Agents from "./components/Agents";
 import Install from "./components/Install";
 import Footer from "./components/Footer";
@@ -13,9 +11,7 @@ export default function Home() {
       <main>
         <Hero />
         <Stage />
-        <SeeIt />
         <Quiet />
-        <States />
         <Agents />
         <Install />
       </main>

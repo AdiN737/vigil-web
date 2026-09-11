@@ -76,7 +76,7 @@ export default function Stage() {
 
   return (
     <section className="border-t border-line">
-      <div ref={track} className="relative h-[460vh]">
+      <div ref={track} className="relative h-[340vh]">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <div className="mx-auto w-full max-w-[1180px] px-6">
             <p className="idx"><b>01</b><span>Vigil at work</span></p>
@@ -85,9 +85,9 @@ export default function Stage() {
               {/* the agent's terminal — lines accumulate as you scroll */}
               <div className="border border-line bg-panel">
                 <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
-                  <span className="size-1.5 rounded-full bg-ink3" />
+                  <span className="size-1.5 rounded-full bg-[color:var(--block)]" />
                   <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
-                    api-server
+                    Claude Code · api-server
                   </span>
                 </div>
                 <div className="h-[248px] space-y-1.5 p-4 text-[12.5px] leading-relaxed">

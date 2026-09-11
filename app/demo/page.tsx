@@ -27,6 +27,7 @@ const EVENTS: { kind: Kind; label: string; detail: string; tier: number; colour:
 type Session = {
   id: number;
   name: string;
+  provider: "Claude" | "Codex";
   tier: number;
   colour: string;
   detail: string;
@@ -41,7 +42,7 @@ const NAMES = ["api-server", "web-client", "data-pipeline", "auth-svc", "billing
 export default function DemoPage() {
   const canAnimate = useCanAnimate();
   const [sessions, setSessions] = useState<Session[]>([
-    { id: 0, name: "api-server", tier: 2, colour: "var(--work)", detail: "npm test", pinged: false },
+    { id: 0, name: "api-server", provider: "Claude", tier: 2, colour: "var(--work)", detail: "npm test", pinged: false },
   ]);
   const [log, setLog] = useState<Log[]>([
     { text: "● api-server — agent working", colour: "var(--work)" },
@@ -115,14 +116,14 @@ export default function DemoPage() {
     const name = NAMES[sessions.length];
     setSessions((prev) => [
       ...prev,
-      { id: Date.now(), name, tier: 2, colour: "var(--work)", detail: "npm run dev", pinged: false },
+      { id: Date.now(), name, provider: sessions.length % 2 ? "Codex" : "Claude", tier: 2, colour: "var(--work)", detail: "npm run dev", pinged: false },
     ]);
     say(`● ${name} — agent working`, "var(--work)");
   };
 
   const reset = () => {
     timers.current.forEach(clearTimeout);
-    setSessions([{ id: 0, name: "api-server", tier: 2, colour: "var(--work)", detail: "npm test", pinged: false }]);
+    setSessions([{ id: 0, name: "api-server", provider: "Claude", tier: 2, colour: "var(--work)", detail: "npm test", pinged: false }]);
     setLog([{ text: "● api-server — agent working", colour: "var(--work)" }]);
     setSuppressed(0); setOpened(0); setEvents(1); setActive(0);
   };
@@ -243,7 +244,7 @@ export default function DemoPage() {
                       >
                         <Widget
                           idPrefix={`s${s.id}`}
-                          tier={{ colour: s.colour, label: "", open: true, project: s.name,
+                          tier={{ colour: s.colour, label: "", open: true, project: s.name, provider: s.provider,
                                   detail: s.detail, danger: s.danger }}
                           onApprove={() => decide(s.id, true)}
                           onDeny={() => decide(s.id, false)}
@@ -289,7 +290,7 @@ export default function DemoPage() {
         <section className="border-b border-line">
           <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-6 px-6 py-12">
             <p className="max-w-[46ch] text-[15px] leading-relaxed text-ink2">
-              That is the whole product. On your machine it watches Claude Code
+              That is the whole product. The current download watches Claude Code
               instead of these buttons.
             </p>
             <a

@@ -21,9 +21,9 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const title = "Vigil — answer Claude Code from the corner of your screen";
+const title = "Vigil — know when your AI coding agent needs you";
 const description =
-  "A Windows widget for Claude Code. A dot in the corner that stays silent while the agent works, and opens the moment it needs an answer — which you give from there, without leaving what you are doing. Free, no account.";
+  "A quiet Windows widget for AI coding agents. It ignores the work, opens only when a decision needs you, and lets you answer above the taskbar. Claude Code ships now; Codex is in source.";
 
 export const metadata: Metadata = {
   title,

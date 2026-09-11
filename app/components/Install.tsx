@@ -3,7 +3,7 @@ import { DOWNLOAD_URL, REPO_URL, SIZE, VERSION } from "../lib/site";
 
 const STEPS: [string, string][] = [
   ["Extract the zip", "Right-click → Extract All. Not the zip preview — that unpacks to a temp folder and won't stick."],
-  ["Run Install Vigil.bat", "Copies to ~/.vigil, connects Claude Code, starts it. SmartScreen will warn: More info → Run anyway."],
+  ["Run Install Vigil.bat", "Copies Vigil to ~/.vigil, connects Claude Code, and starts the widget."],
   ["Restart Claude Code", "Hooks load at session start, so open a fresh window."],
 ];
 
@@ -31,8 +31,7 @@ export default function Install() {
           </ol>
 
           <p className="mt-6 text-[12px] leading-relaxed text-ink3">
-            Requires Claude Code. Windows 10 &amp; 11 — macOS is ported but
-            unbuilt, see the{" "}
+            The downloadable build supports Claude Code on Windows 10 &amp; 11. The Codex adapter is in source and being validated. macOS is ported but unbuilt — see the{" "}
             <a href={REPO_URL} className="text-ink2 underline underline-offset-4 hover:text-accent">
               repo
             </a>.
